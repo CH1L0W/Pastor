@@ -30,6 +30,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar Cliente"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarClienteActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnEliminarCliente">
               <Properties>
@@ -53,6 +56,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarCuentaActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnVerCuentas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Cuentas"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

@@ -4,9 +4,7 @@
  */
 package mx.itson.pastor.presentacion;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.itson.pastor.entidades.Cliente;
@@ -46,6 +44,7 @@ public class ClienteListado extends javax.swing.JFrame {
         btnEliminarCliente = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         btnAgregarCuenta = new javax.swing.JMenuItem();
+        btnVerCuentas = new javax.swing.JMenuItem();
 
         jMenu2.setText("jMenu2");
 
@@ -106,6 +105,11 @@ public class ClienteListado extends javax.swing.JFrame {
         jMenu3.add(btnAgregarCliente);
 
         btnEditarCliente.setText("Editar Cliente");
+        btnEditarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarClienteActionPerformed(evt);
+            }
+        });
         jMenu3.add(btnEditarCliente);
 
         btnEliminarCliente.setText("Eliminar Cliente");
@@ -127,6 +131,9 @@ public class ClienteListado extends javax.swing.JFrame {
             }
         });
         jMenu1.add(btnAgregarCuenta);
+
+        btnVerCuentas.setText("Ver Cuentas");
+        jMenu1.add(btnVerCuentas);
 
         jMenuBar1.add(jMenu1);
 
@@ -151,11 +158,7 @@ public class ClienteListado extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnAgregarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCuentaActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
-        int id = Integer.parseInt(String.valueOf(modelo.getValueAt(tblClientes.getSelectedRow(), 0)));
-        ClienteForm agregar = new ClienteForm(id);
-        agregar.setVisible(true);
-        cargar();
+        
     }//GEN-LAST:event_btnAgregarCuentaActionPerformed
 
     private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
@@ -176,6 +179,13 @@ public class ClienteListado extends javax.swing.JFrame {
             cargar();
         }
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
+
+    private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        int id = Integer.parseInt(String.valueOf(modelo.getValueAt(tblClientes.getSelectedRow(), 0)));
+        ClienteForm agregar = new ClienteForm(id);
+        agregar.setVisible(true);
+        cargar();    }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,6 +251,7 @@ public class ClienteListado extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnAgregarCuenta;
     private javax.swing.JMenuItem btnEditarCliente;
     private javax.swing.JMenuItem btnEliminarCliente;
+    private javax.swing.JMenuItem btnVerCuentas;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

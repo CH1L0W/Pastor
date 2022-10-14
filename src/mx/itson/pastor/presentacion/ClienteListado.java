@@ -4,10 +4,15 @@
  */
 package mx.itson.pastor.presentacion;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import mx.itson.pastor.entidades.Cliente;
+import mx.itson.pastor.entidades.Cuenta;
 import mx.itson.pastor.persistencia.ClienteDAO;
+import mx.itson.pastor.persistencia.CuentaDAO;
 /**
  *
  * @author marit
@@ -19,6 +24,7 @@ public class ClienteListado extends javax.swing.JFrame {
      */
     public ClienteListado() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -30,8 +36,18 @@ public class ClienteListado extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu2 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        btnAgregarCliente = new javax.swing.JMenuItem();
+        btnEditarCliente = new javax.swing.JMenuItem();
+        btnEliminarCliente = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        btnAgregarCuenta = new javax.swing.JMenuItem();
+
+        jMenu2.setText("jMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -42,16 +58,79 @@ public class ClienteListado extends javax.swing.JFrame {
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Direccion", "Telefono", "Email"
+                "Id", "Nombre", "Direccion", "Telefono", "Email"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblClientes.setColumnSelectionAllowed(true);
+        tblClientes.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblClientes);
+        tblClientes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tblClientes.getColumnModel().getColumnCount() > 0) {
+            tblClientes.getColumnModel().getColumn(0).setMinWidth(0);
+            tblClientes.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblClientes.getColumnModel().getColumn(1).setResizable(false);
+            tblClientes.getColumnModel().getColumn(2).setResizable(false);
+            tblClientes.getColumnModel().getColumn(3).setResizable(false);
+            tblClientes.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        jMenu3.setText("Opciones");
+
+        btnAgregarCliente.setText("Agregar Cliente");
+        btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarClienteActionPerformed(evt);
+            }
+        });
+        jMenu3.add(btnAgregarCliente);
+
+        btnEditarCliente.setText("Editar Cliente");
+        jMenu3.add(btnEditarCliente);
+
+        btnEliminarCliente.setText("Eliminar Cliente");
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
+        jMenu3.add(btnEliminarCliente);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu1.setText("Cuenta");
+
+        btnAgregarCuenta.setText("Agregar Cuenta");
+        btnAgregarCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarCuentaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnAgregarCuenta);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,27 +140,42 @@ public class ClienteListado extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        List<Cliente> clientes = ClienteDAO.obtenerTodos();
-        
-        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
-        modelo.setRowCount(0);
-        
-        for(Cliente c : clientes){
-            modelo.addRow(new Object[]{
-                c.getNombre(),
-                c.getDireccion(),
-                c.getTelefono(),
-                c.getEmail()
-            });
-        }
+        cargar();
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnAgregarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCuentaActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        int id = Integer.parseInt(String.valueOf(modelo.getValueAt(tblClientes.getSelectedRow(), 0)));
+        ClienteForm agregar = new ClienteForm(id);
+        agregar.setVisible(true);
+        cargar();
+    }//GEN-LAST:event_btnAgregarCuentaActionPerformed
+
+    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
+        ClienteForm agregar = new ClienteForm(0);
+        agregar.setVisible(true);
+        cargar();
+    }//GEN-LAST:event_btnAgregarClienteActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        int id = Integer.parseInt(String.valueOf(modelo.getValueAt(tblClientes.getSelectedRow(), 0)));
+        int confirmar = JOptionPane.showConfirmDialog(null, "¿Realmente desea eliminar este registro?", "Confirmar eliminacion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (confirmar == 0) {
+            ClienteDAO.Eliminar(id);
+            cargar();
+        } else {
+            cargar();
+        }
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,7 +212,39 @@ public class ClienteListado extends javax.swing.JFrame {
         });
     }
 
+    public void cargar(){        
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        modelo.setRowCount(0);
+        List<Cliente> clientes = ClienteDAO.obtenerTodos();
+        for(Cliente c : clientes){
+            modelo.addRow(new Object[]{
+                c.getId(),
+                c.getNombre(),
+                c.getDireccion(),
+                c.getTelefono(),
+                c.getEmail()
+            });
+        }       
+    }
+    
+    public String generarCuenta(){
+        String cuenta =""; 
+        for(int i = 0; i<19; i++){
+            int n = (int) Math.random();
+            cuenta += String.valueOf(n);
+        }
+        return cuenta;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnAgregarCliente;
+    private javax.swing.JMenuItem btnAgregarCuenta;
+    private javax.swing.JMenuItem btnEditarCliente;
+    private javax.swing.JMenuItem btnEliminarCliente;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblClientes;
     // End of variables declaration//GEN-END:variables

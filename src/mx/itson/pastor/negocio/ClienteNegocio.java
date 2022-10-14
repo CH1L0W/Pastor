@@ -14,7 +14,9 @@ public class ClienteNegocio {
     public static boolean guardar(String nombre, String direccion, String telefono, String email){
         boolean resultado = false;
         try {
-            resultado = ClienteDAO.guardar(nombre, direccion, telefono, email);
+            if(!ClienteDAO.comprobarEmail(email)){
+                resultado = ClienteDAO.guardar(nombre, direccion, telefono, email);
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

@@ -4,6 +4,8 @@
  */
 package mx.itson.pastor.presentacion;
 
+import javax.swing.JOptionPane;
+import mx.itson.pastor.entidades.Cliente;
 import mx.itson.pastor.negocio.ClienteNegocio;
 import mx.itson.pastor.persistencia.ClienteDAO;
 
@@ -16,8 +18,10 @@ public class ClienteForm extends javax.swing.JFrame {
     /**
      * Creates new form ClienteForm
      */
-    public ClienteForm() {
+    int id = 0;
+    public ClienteForm(int id) {
         initComponents();
+        this.id = id;
     }
 
     /**
@@ -107,13 +111,23 @@ public class ClienteForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if(this.id != 0){
+            Cliente cliente = ClienteDAO.obtenerPorId(this.id);
+            txtNombre.setText(cliente.getNombre());
+            txtDireccion.setText(cliente.getDireccion());
+            txtTelefono.setText(cliente.getTelefono());
+            txtEmail.setText(cliente.getEmail());
+        }
+
         String nombre = txtNombre.getText();
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
         String email = txtEmail.getText();
         
-        if(ClienteDAO.comprobarEmail(nombre, direccion, telefono, email) == false){
-            Clienten
+        if(ClienteNegocio.guardar(nombre, direccion, telefono, email)){
+            JOptionPane.showMessageDialog(this, "El registro se guardo correctamente", "Registro guardado", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this, "No es posible guardar el cliente. Ya existe el correo registrado", "Registro no guardado", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -147,7 +161,7 @@ public class ClienteForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClienteForm().setVisible(true);
+                new ClienteForm(0).setVisible(true);
             }
         });
     }
